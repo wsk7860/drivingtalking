@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>server</artifactId>
+        <groupId>com.drivingtalking</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>launcher</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.drivingtalking</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.drivingtalking</groupId>
+            <artifactId>repository</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.drivingtalking</groupId>
+            <artifactId>service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.drivingtalking</groupId>
+            <artifactId>presentation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.drivingtalking</groupId>
+            <artifactId>infrastructure</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>com-driving-talking</finalName>
+        <plugins>
+            <!-- 通过maven-assembly-plugin将工程合并到一个classes目录 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>package-all</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly-aggregate.xml</descriptor>
+                            </descriptors>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 然后再通过SpringBoot插件重打包 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>ServerApplication</mainClass>
+                    <layout>JAR</layout>
+                    <!-- Spring Devtools开关 -->
+                    <fork>false</fork>
+                    <!-- 代码已经再classes目录，在依赖中排除掉避免在lib目录中生成重复的jar包 -->
+                    <excludeGroupIds>com.drivingtalking</excludeGroupIds>
+                    <!-- 生成一个外壳，linux下可不需要java命令，通过app.jar start|stop|restart来运行 -->
+                    <executable>true</executable>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                            <!-- 如果开启了SpringBoot Actuator，从这里获取Maven的Properties -->
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 最后把生产环境的配置复制出来发，方便修改 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>com.drivingtalking</groupId>
+                            <artifactId>core</artifactId>
+                            <type>jar</type>
+                            <includes>**/application-prod.yml</includes>
+                            <overWrite>false</overWrite>
+                        </artifactItem>
+                    </artifactItems>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

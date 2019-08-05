@@ -1,0 +1,17 @@
+<assembly>
+    <id>aggregate</id>
+    <formats>
+        <format>jar</format> <!-- the result is a jar file -->
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory> <!-- strip the module prefixes -->
+
+    <dependencySets>
+        <dependencySet>
+            <!-- unpack , then repack the jars -->
+            <unpack>true</unpack>
+            <!-- do not pull in any transitive dependencies -->
+            <useTransitiveDependencies>false</useTransitiveDependencies>
+        </dependencySet>
+    </dependencySets>
+</assembly>
