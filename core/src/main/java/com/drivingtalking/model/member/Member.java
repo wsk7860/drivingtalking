@@ -3,6 +3,8 @@ package com.drivingtalking.model.member;
 import com.drivingtalking.model.base.BaseModel;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class Member extends BaseModel {
 
@@ -17,6 +19,10 @@ public class Member extends BaseModel {
     private int isAuthentication;
 
     private int sex;
+
+    private List<String> labelIds;
+
+    private String carId;
 
 
 

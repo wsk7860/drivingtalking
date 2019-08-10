@@ -20,4 +20,9 @@ public class Car extends BaseModel {
      * 级别
      */
     private String level;
+
+    /**
+     * 型号对应的
+     */
+    private String modelTypeIds;
 }

@@ -40,4 +40,6 @@ public class AuthenticationInfo extends BaseModel {
      */
     private String drivingPermitNegativePicId;
 
+    private String userId;
+
 }

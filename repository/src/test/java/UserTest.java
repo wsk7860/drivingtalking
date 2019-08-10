@@ -1,3 +1,4 @@
+import com.drivingtalking.ServerApplication;
 import com.drivingtalking.dao.MemberDAO;
 import com.drivingtalking.model.member.Member;
 import com.drivingtalking.util.PagerManager;

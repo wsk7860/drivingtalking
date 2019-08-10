@@ -3,6 +3,10 @@ project:
     appid: 5e8f25a35b9e4441923c13d542e74c1c
     certificate: 5039b9df22a9444897061be68a3727af
 spring:
+  redis:
+    database: 0
+    host: 47.107.98.186
+    port: 6379
   data:
     mongodb:
       uri: mongodb://47.107.98.186:27017/drivingtalking

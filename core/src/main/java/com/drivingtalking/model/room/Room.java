@@ -3,6 +3,7 @@ package com.drivingtalking.model.room;
 import com.drivingtalking.model.base.BaseModel;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -34,6 +35,8 @@ public class Room extends BaseModel {
     private int isFull;
 
     private Type type;
+
+    private Date createDate;
 
 
 }

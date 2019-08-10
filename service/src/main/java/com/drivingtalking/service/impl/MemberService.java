@@ -1,6 +1,7 @@
 package com.drivingtalking.service.impl;
 
 import com.drivingtalking.dao.MemberDAO;
+import com.drivingtalking.exception.ServiceException;
 import com.drivingtalking.model.member.Member;
 import com.drivingtalking.service.IMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,5 +17,10 @@ public class MemberService extends BaseService<Member, MemberDAO> implements IMe
     @Override
     public Member getByLoginName(String name) {
         return memberDAO.getByLoginName(name);
+    }
+
+    @Override
+    public void testException() {
+        throw new ServiceException("test1");
     }
 }

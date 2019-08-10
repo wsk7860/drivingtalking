@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.MongoDbFactory;
 
 @Configurable
-public class MongodbGridFSConfigure {
+public class MongodbGridFSConfiguration {
 
     @Autowired
     private MongoDbFactory mongoDbFactory;

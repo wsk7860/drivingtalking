@@ -7,7 +7,7 @@ public class ResponseModel<T> {
 
     private int status = 1;
 
-    private String errMsg;
+    private String errorMessage;
 
     private  T  result;
 
@@ -15,9 +15,9 @@ public class ResponseModel<T> {
 
     }
 
-    private ResponseModel(String errMsg){
+    private ResponseModel(String errorMessage){
         this.status = 0;
-        this.errMsg = errMsg;
+        this.errorMessage = errorMessage;
     }
 
 
@@ -25,13 +25,13 @@ public class ResponseModel<T> {
         this.result =  t;
     }
 
-    public ResponseModel(int status,String errMsg){
+    public ResponseModel(int status,String errorMessage){
         this.status = status;
-        this.errMsg = errMsg;
+        this.errorMessage = errorMessage;
     }
 
-    public static ResponseModel buildForErr(String errMsg) {
-        return  new ResponseModel(errMsg);
+    public static ResponseModel buildForErr(String errorMessage) {
+        return  new ResponseModel(errorMessage);
     }
 
 }

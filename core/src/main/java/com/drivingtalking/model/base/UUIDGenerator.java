@@ -1,4 +1,4 @@
-package com.drivingtalking.util;
+package com.drivingtalking.model.base;
 
 
 import java.util.Random;
