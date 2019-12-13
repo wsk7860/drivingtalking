@@ -6,6 +6,9 @@ import com.drivingtalking.model.base.BaseModel;
 import com.drivingtalking.service.IBaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Query;
+
+import java.util.List;
 
 public class BaseService<T extends BaseModel,D extends BaseDAO<T>> implements IBaseService<T>{
     @Autowired
@@ -25,4 +28,11 @@ public class BaseService<T extends BaseModel,D extends BaseDAO<T>> implements IB
     public void deleteById(String id) {
 
     }
+
+    @Override
+    public List<T> findAll(Class<T> t) {
+        return dao.findPyQuery(t,new Query());
+    }
+
+
 }

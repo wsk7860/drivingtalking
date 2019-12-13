@@ -1,7 +1,8 @@
 package com.drivingtalking.controller;
 
+import com.drivingtalking.configure.MessageProducer;
 import com.drivingtalking.test.BaseControllerTest;
-import com.drivingtalking.util.RedisUtil;
+import com.drivingtalking.util.RedisUtils;
 import com.drivingtalking.util.ResponseModel;
 import com.drivingtalking.vo.member.MemberVO;
 import org.junit.Test;
@@ -13,7 +14,10 @@ import java.util.Map;
 public class LoginControllerTest extends BaseControllerTest {
 
     @Autowired
-    private RedisUtil redisUtil;
+    private RedisUtils redisUtils;
+
+    @Autowired
+    private MessageProducer messageProducer;
 
     @Test
     public void test() {
@@ -31,9 +35,9 @@ public class LoginControllerTest extends BaseControllerTest {
 
     @Test
     public void test2(){
-        redisUtil.set("1","1");
-
-        System.out.println(redisUtil.get("1"));
+        redisUtils.set("1","1");
+        System.out.println(redisUtils.get("1"));
+        messageProducer.send("this is message");
     }
 
 }

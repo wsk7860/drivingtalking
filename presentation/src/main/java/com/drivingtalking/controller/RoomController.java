@@ -5,6 +5,7 @@ package com.drivingtalking.controller;
 import com.drivingtalking.model.room.Room;
 import com.drivingtalking.service.IRoomService;
 import com.drivingtalking.util.ContextManager;
+import com.drivingtalking.util.RedisUtils;
 import com.drivingtalking.util.ResponseModel;
 import com.drivingtalking.vo.room.RoomVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,11 @@ public class RoomController extends BaseController {
 
     @Autowired
     private IRoomService roomService;
+
+    @Autowired
+    private RedisUtils redisUtils;
+
+
 
 
     /**
@@ -42,6 +48,23 @@ public class RoomController extends BaseController {
     public ResponseModel joinRoom(@PathVariable("id") String id){
         return  null;
     }
+
+    @GetMapping("/leaveRoom/{id}")
+    public ResponseModel leaveRoom(@PathVariable("id") String id) {
+        return  null;
+    }
+
+    /**
+     *  随机获取房间
+     * @param longitude 经度
+     * @param latitude  纬度
+     */
+    @GetMapping("/getRandomRoom")
+    public ResponseModel<String> getRandomRoom(String longitude,String latitude) {
+       return new ResponseModel<>(roomService.getRandomRoom(longitude,latitude));
+    }
+
+
 
 
 

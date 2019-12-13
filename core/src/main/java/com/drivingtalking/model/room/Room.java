@@ -24,19 +24,28 @@ public class Room extends BaseModel {
 
     private String name;
 
+    /**
+     * 经度
+     */
     private String longitude;
-
+    /**
+     * 纬度
+     */
     private String  latitude;
-
+    /**
+     * 地理位置
+     */
     private String  position;
 
-    private List<String> memberIds;
-
-    private int isFull;
-
-    private Type type;
-
+    private Integer type;
+    /**
+     * 创建时间
+     */
     private Date createDate;
+    /**
+     * 人员限制
+     */
+    private Integer limit;
 
 
 }

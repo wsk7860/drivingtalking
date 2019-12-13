@@ -33,8 +33,6 @@
             <groupId>com.drivingtalking</groupId>
             <artifactId>infrastructure</artifactId>
         </dependency>
-
-
     </dependencies>
 
 

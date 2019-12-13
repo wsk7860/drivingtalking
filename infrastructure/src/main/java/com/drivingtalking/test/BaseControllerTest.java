@@ -65,7 +65,7 @@ public class BaseControllerTest {
     public void setUp(){
         if (sessionIDStr == null) {
             MultiValueMap<String, Object> paramMap = new LinkedMultiValueMap<>();
-            paramMap.add("loginName", "粤CW9170");
+            paramMap.add("loginName", "18666982982");
             HttpHeaders headers = new HttpHeaders();
             HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(paramMap,headers);
             ResponseEntity<ResponseModel> responseEntity = testRestTemplate.postForEntity("/login",httpEntity,ResponseModel.class);

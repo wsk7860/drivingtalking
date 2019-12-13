@@ -29,5 +29,9 @@ public class ContextManager {
         return (Member)context.get().getAttribute(LOGIN_MEMBER);
     }
 
+    public static HttpSession getSession(){
+        return  context.get();
+    }
+
 
 }

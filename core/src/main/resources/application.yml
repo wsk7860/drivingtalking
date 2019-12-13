@@ -6,10 +6,26 @@ spring:
   redis:
     database: 0
     host: 47.107.98.186
-    port: 6379
+    port: 29736
+    timeout: 5000
   data:
     mongodb:
       uri: mongodb://47.107.98.186:27017/drivingtalking
+  rabbitmq:
+    template:
+      mandatory: true
+    publisher-confirms: true
+    publisher-returns: true
+    listener:
+      simple:
+        concurrency: 5
+        max-concurrency: 10
+        prefetch: 20
+        acknowledge-mode: manual
+    host: 47.107.98.186
+    port: 5672
+    username: admin
+    password: admin
 server:
   port: 8081
 

@@ -3,7 +3,7 @@ package com.drivingtalking.vo.member;
 import lombok.Data;
 
 @Data
-public class MemberRegisterVO  {
+public class RegisterVO {
 
     private String loginName;
 
