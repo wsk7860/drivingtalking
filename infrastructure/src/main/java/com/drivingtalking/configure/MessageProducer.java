@@ -26,18 +26,18 @@ public class MessageProducer {
     private final RabbitTemplate.ConfirmCallback confirmCallback = (correlationData, ack, cause) -> {
         if (!ack) {
             System.out.println("消息发送失败：correlationData: {},cause: {}");
-        }else {
+        } else {
             System.out.println("消息发送成功：correlationData: {},ack: {}");
         }
     };
 
     private final RabbitTemplate.ReturnCallback returnCallback = (message, replyCode, replyText, exchange, routeKey) ->
-            System.out.println ("消息丢失: exchange: {},routeKey: {},replyCode: {},replyText: {}");
+            System.out.println("消息丢失: exchange: {},routeKey: {},replyCode: {},replyText: {}");
 
     public void send(String message) {
         // 构建回调返回的数据
         CorrelationData correlationData = new CorrelationData();
-        correlationData.setId(new Date().getTime() +  "");
+        correlationData.setId(new Date().getTime() + "");
 
         Message message1 = MessageBuilder.withBody(message.getBytes())
                 .setContentType(MessageProperties.CONTENT_TYPE_TEXT_PLAIN)
@@ -46,6 +46,6 @@ public class MessageProducer {
                 .build();
         rabbitTemplate.setConfirmCallback(confirmCallback);
         rabbitTemplate.setReturnCallback(returnCallback);
-            rabbitTemplate.convertAndSend("exchange-2", "driving-working", message1, correlationData);
+        rabbitTemplate.convertAndSend("exchange-2", "driving-working", message1, correlationData);
     }
 }

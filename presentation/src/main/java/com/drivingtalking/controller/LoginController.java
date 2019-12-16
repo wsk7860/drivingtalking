@@ -6,17 +6,18 @@ import com.drivingtalking.service.IMemberService;
 import com.drivingtalking.util.ContextManager;
 import com.drivingtalking.util.ResponseModel;
 import com.drivingtalking.vo.member.MemberVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.regex.Pattern;
 
-
+@Api(tags = "用户登录相关接口")
 @RestController
 public class LoginController extends BaseController {
 
@@ -24,7 +25,11 @@ public class LoginController extends BaseController {
     private IMemberService memberService;
 
 
-    @RequestMapping("/login")
+    @GetMapping("/login")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "loginName",value = "登录名",defaultValue = "13800000000")
+    })
+    @ApiOperation(value = "登录接口",httpMethod = "GET")
     public ResponseModel<MemberVO> login(String loginName){
 
         if (StringUtils.isEmpty(loginName)) {
@@ -43,7 +48,8 @@ public class LoginController extends BaseController {
          return  new ResponseModel<>(map(member,MemberVO.class));
     }
 
-    @RequestMapping("/loginOut")
+    @GetMapping("/loginOut")
+    @ApiOperation(value = "登出接口",httpMethod = "GET")
     public ResponseModel<String> loginOut() {
         ContextManager.setSessionMember(null);
         ContextManager.getSession().invalidate();
@@ -51,6 +57,7 @@ public class LoginController extends BaseController {
     }
 
     @PostMapping("/register")
+    @ApiOperation(value = "会员注册",httpMethod = "POST")
     public ResponseModel<Member> register(@RequestBody @Validated MemberVO member){
         Member perMember = map(member,Member.class);
         memberService.save(perMember);

@@ -19,15 +19,15 @@ public class RoomServiceTest {
 
     @Test
     public void test(){
-        for (int i=0;i<10;i++) {
-        Room room = new Room();
-        room.setCreateDate(new Date());
-        room.setLimit(50);
-        room.setType(Room.Type.MULTIPLE.ordinal());
-        room.setLatitude("0");
-        room.setLatitude("0");
-        room.setName("珠海"+(i+1));
-        roomService.save(room);
-        }
+//        for (int i=0;i<10;i++) {
+//        Room room = new Room();
+//        room.setCreateDate(new Date());
+//        room.setLimit(50);
+//        room.setType(Room.Type.MULTIPLE.ordinal());
+//        room.setLatitude("0");
+//        room.setLatitude("0");
+//        room.setName("珠海"+(i+1));
+//        roomService.save(room);
+//        }
     }
 }

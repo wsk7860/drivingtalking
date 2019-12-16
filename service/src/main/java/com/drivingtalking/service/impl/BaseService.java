@@ -12,7 +12,7 @@ import java.util.List;
 
 public class BaseService<T extends BaseModel,D extends BaseDAO<T>> implements IBaseService<T>{
     @Autowired
-    private D dao;
+    protected D dao;
 
     @Override
     public T getById(Class<T> t, String id) {

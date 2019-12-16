@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+/**
+ * 全局异常处理
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
     private static Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);

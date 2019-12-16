@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
 
-@Controller
-@RequestMapping("/file")
+//@Controller
+//@RequestMapping("/file")
 public class FileUploadController {
 
     @Autowired
