@@ -52,7 +52,6 @@ public class LoginController extends BaseController {
     @ApiOperation(value = "登出接口",httpMethod = "GET")
     public ResponseModel<String> loginOut() {
         ContextManager.setSessionMember(null);
-        ContextManager.getSession().invalidate();
         return new ResponseModel<>("退出成功");
     }
 

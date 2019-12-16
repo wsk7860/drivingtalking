@@ -31,7 +31,6 @@ public class BaseInterceptor implements HandlerInterceptor {
             whiteList.add("/login");
             whiteList.add("/register");
             whiteList.add("/file");
-            whiteList.add("/swagger");
             return whiteList;
     }
 
