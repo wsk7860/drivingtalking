@@ -5,6 +5,7 @@ import com.drivingtalking.exception.ServiceException;
 import com.drivingtalking.model.cache.RoomOnline;
 import com.drivingtalking.model.room.Room;
 import com.drivingtalking.service.IRoomService;
+import com.drivingtalking.util.ContextManager;
 import com.drivingtalking.util.PagerManager;
 import com.drivingtalking.util.PagerSupporter;
 import com.drivingtalking.util.RedisUtils;
@@ -38,6 +39,42 @@ public class RoomService extends BaseService<Room, RoomDAO> implements IRoomServ
         }
     }
 
+    @Override
+    public Boolean joinRoom(String roomId) {
+        RoomOnline roomOnline = checkRoomValidate(roomId);
+        roomOnline.getMemberIds().add(ContextManager.getSessionMember().getId());
+        redisUtils.setKeyValue(DEFAULT_ROOM_KEY,roomId,roomOnline);
+        return true;
+    }
+
+    @Override
+    public Boolean leaveRoom(String roomId) {
+        RoomOnline roomOnline = checkRoomValidate(roomId);
+        roomOnline.getMemberIds().remove(roomId);
+        redisUtils.setKeyValue(DEFAULT_ROOM_KEY,roomId,roomOnline);
+        return true;
+    }
+
+    @Override
+    public Boolean handleRoomMember(String roomId,String memberId) {
+        RoomOnline roomOnline = redisUtils.getKeyValue(DEFAULT_ROOM_KEY,roomId,RoomOnline.class);
+        if (roomOnline != null) {
+            roomOnline.getMemberIds().remove(memberId);
+        }
+        return true;
+    }
+
+    private RoomOnline checkRoomValidate(String roomId) {
+        if (StringUtils.isEmpty(roomId)) {
+            throw  new ServiceException("房间ID不能为空");
+        }
+        RoomOnline roomOnline = redisUtils.getKeyValue(DEFAULT_ROOM_KEY,roomId,RoomOnline.class);
+        if (roomOnline == null) {
+            throw  new ServiceException("加入房间不存在");
+        }
+        return roomOnline;
+    }
+
     private String getRandomRoomForCache(String roomId) {
     List<RoomOnline> roomOnlineList = redisUtils.keyValueList(DEFAULT_ROOM_KEY,RoomOnline.class);
     List<String> validRoomIds = new ArrayList<>();
@@ -62,8 +99,7 @@ public class RoomService extends BaseService<Room, RoomDAO> implements IRoomServ
         if (index == 0) {
             throw  new ServiceException("所有房间已满不能切换房间");
         }
-        Integer randomIndex = new Random().nextInt((index-1));
-        return  validRoomIds.get(randomIndex);
+        return  validRoomIds.get(new Random().nextInt((index-1)));
     }
 
     private RoomOnline transformByRoom(Room room) {

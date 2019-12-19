@@ -4,13 +4,16 @@ import com.drivingtalking.model.member.Member;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 
 public class ContextManager {
 
     private static final ThreadLocal<HttpSession> context = new ThreadLocal<>();
 
-    private static final String LOGIN_MEMBER = "member";
+    public static final String LOGIN_MEMBER = "member";
+
+    public static final String ROOM_ID = "room_id";
 
     private ContextManager () {
 
@@ -33,5 +36,12 @@ public class ContextManager {
         return  context.get();
     }
 
+    public static  void setSessionRoomId(String room_id){
+        context.get().setAttribute(ROOM_ID,room_id);
+    }
+
+    public static String getSessionRoomId() {
+        return Optional.ofNullable((String)context.get().getAttribute(ROOM_ID)).orElse(null) ;
+    }
 
 }

@@ -62,7 +62,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>ServerApplication</mainClass>
+                    <mainClass>com.drivingtalking.ServerApplication</mainClass>
                     <layout>JAR</layout>
                     <!-- Spring Devtools开关 -->
                     <fork>false</fork>

@@ -48,14 +48,14 @@ public class RoomController extends BaseController {
      */
     @GetMapping("/joinRoom/{id}")
     @ApiOperation(value = "加入房间",httpMethod = "GET")
-    public ResponseModel joinRoom(@PathVariable("id") String id){
-        return  null;
+    public ResponseModel<Boolean> joinRoom(@PathVariable("id") String id){
+        return  new ResponseModel<>(roomService.joinRoom(id));
     }
 
     @GetMapping("/leaveRoom/{id}")
     @ApiOperation(value = "离开房间",httpMethod = "GET")
-    public ResponseModel leaveRoom(@PathVariable("id") String id) {
-        return  null;
+    public ResponseModel<Boolean> leaveRoom(@PathVariable("id") String id) {
+        return new ResponseModel<>(roomService.leaveRoom(id));
     }
 
     /**

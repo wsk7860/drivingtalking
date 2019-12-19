@@ -3,6 +3,7 @@ package com.drivingtalking.controller;
 import com.drivingtalking.exception.ControllerException;
 import com.drivingtalking.model.member.Member;
 import com.drivingtalking.service.IMemberService;
+import com.drivingtalking.service.IRoomService;
 import com.drivingtalking.util.ContextManager;
 import com.drivingtalking.util.ResponseModel;
 import com.drivingtalking.vo.member.MemberVO;
@@ -24,12 +25,15 @@ public class LoginController extends BaseController {
     @Autowired
     private IMemberService memberService;
 
+    @Autowired
+    private IRoomService roomService;
 
-    @GetMapping("/login")
+
+    @PostMapping("/login")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "loginName",value = "登录名",defaultValue = "13800000000")
     })
-    @ApiOperation(value = "登录接口",httpMethod = "GET")
+    @ApiOperation(value = "登录接口",httpMethod = "POST")
     public ResponseModel<MemberVO> login(String loginName){
 
         if (StringUtils.isEmpty(loginName)) {
@@ -45,13 +49,18 @@ public class LoginController extends BaseController {
           memberService.save(member);
         }
         ContextManager.setSessionMember(member);
+        ContextManager.getSession().setMaxInactiveInterval(8);
          return  new ResponseModel<>(map(member,MemberVO.class));
     }
 
     @GetMapping("/loginOut")
     @ApiOperation(value = "登出接口",httpMethod = "GET")
     public ResponseModel<String> loginOut() {
+        String roomId = ContextManager.getSessionRoomId();
+        String memberId = ContextManager.getSessionMember().getId();
+        roomService.handleRoomMember(roomId,memberId);
         ContextManager.setSessionMember(null);
+        ContextManager.getSession().invalidate();
         return new ResponseModel<>("退出成功");
     }
 

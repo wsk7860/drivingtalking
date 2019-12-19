@@ -1,5 +1,7 @@
 package com.drivingtalking.listenner;
 
+import com.drivingtalking.model.member.Member;
+import com.drivingtalking.util.ContextManager;
 import com.drivingtalking.util.RedisUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,8 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionActivationListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.util.Optional;
+
 
 @WebListener
 public class SessionListener implements HttpSessionListener, HttpSessionActivationListener {
@@ -21,15 +25,13 @@ public class SessionListener implements HttpSessionListener, HttpSessionActivati
 
     @Override
     public void  sessionCreated(HttpSessionEvent event) {
-        logger.info("session created");
-        redisUtils.set("1","123123");
 
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent event) {
-        logger.info("session destroyed");
-        System.out.print(redisUtils.get("1"));
-        redisUtils.del("1");
+        Optional<String> roomId = Optional.ofNullable(ContextManager.getSessionRoomId());
+        String memberId =  Optional.ofNullable(ContextManager.getSessionMember()).map(Member::getId).orElse(null);
+        logger.info(roomId +"------"+memberId);
     }
 }
