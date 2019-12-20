@@ -16,4 +16,6 @@ public class MemberDAO extends BaseDAO<Member> {
         return getByParam(Member.class,params);
     }
 
+
+
 }

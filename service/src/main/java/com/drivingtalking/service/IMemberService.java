@@ -8,5 +8,7 @@ public interface IMemberService extends IBaseService<Member> {
 
     void testException();
 
+    void saveMember(Member member);
+
 
 }

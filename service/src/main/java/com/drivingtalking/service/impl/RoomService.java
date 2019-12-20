@@ -10,6 +10,8 @@ import com.drivingtalking.util.PagerManager;
 import com.drivingtalking.util.PagerSupporter;
 import com.drivingtalking.util.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,8 @@ public class RoomService extends BaseService<Room, RoomDAO> implements IRoomServ
     private RedisUtils redisUtils;
 
     public static String DEFAULT_ROOM_KEY = "00";
+    private static Logger logger = LoggerFactory.getLogger(RoomService.class);
+
 
 
     @Override
@@ -43,7 +47,12 @@ public class RoomService extends BaseService<Room, RoomDAO> implements IRoomServ
     public Boolean joinRoom(String roomId) {
         RoomOnline roomOnline = checkRoomValidate(roomId);
         roomOnline.getMemberIds().add(ContextManager.getSessionMember().getId());
+        if (roomOnline.getMemberIds().size() == roomOnline.getLimit()) {
+            roomOnline.setFull(true);
+            logger.info("房间ID ：" + roomId +"已满员");
+        }
         redisUtils.setKeyValue(DEFAULT_ROOM_KEY,roomId,roomOnline);
+        logger.info(ContextManager.getSessionMember().getId() +"加入房间ID" + roomId);
         return true;
     }
 
@@ -51,6 +60,9 @@ public class RoomService extends BaseService<Room, RoomDAO> implements IRoomServ
     public Boolean leaveRoom(String roomId) {
         RoomOnline roomOnline = checkRoomValidate(roomId);
         roomOnline.getMemberIds().remove(roomId);
+        if(roomOnline.getMemberIds().size() < roomOnline.getLimit()) {
+            roomOnline.setFull(false);
+        }
         redisUtils.setKeyValue(DEFAULT_ROOM_KEY,roomId,roomOnline);
         return true;
     }

@@ -3,11 +3,12 @@ package com.drivingtalking.model.member;
 import com.drivingtalking.model.base.BaseModel;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class Member extends BaseModel {
+public class Member extends BaseModel  implements Serializable {
 
     private String loginName;
 
@@ -23,7 +24,9 @@ public class Member extends BaseModel {
 
     private List<String> labelIds;
 
-    private String carId;
+    private String carNumber;
+
+    private String carInfo;
 
     private Date createDate;
 
