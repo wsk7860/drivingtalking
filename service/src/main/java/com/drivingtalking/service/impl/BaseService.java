@@ -34,5 +34,10 @@ public class BaseService<T extends BaseModel,D extends BaseDAO<T>> implements IB
         return dao.findPyQuery(t,new Query());
     }
 
+    @Override
+    public List<T> findByIds(Class<T> t,List<String> ids) {
+        return dao.findByIds(t,ids);
+    }
+
 
 }

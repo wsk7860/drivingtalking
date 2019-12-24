@@ -26,7 +26,12 @@ public class BaseDAO <T extends BaseModel> {
         return  proxy.findOne(t,query);
     }
 
-    public T getByParam(Class<T> t ,Map<String, Object> params){
+    public List<T> findByIds(Class<T> t,List<String> ids) {
+        Query query = new Query(Criteria.where("id").in(ids));
+        return proxy.findList(t,query);
+    }
+
+  public T getByParam(Class<T> t ,Map<String, Object> params){
         return proxy.findOne(t,getQuery(params));
     };
 

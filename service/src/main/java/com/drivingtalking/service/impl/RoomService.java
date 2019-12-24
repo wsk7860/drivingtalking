@@ -76,6 +76,12 @@ public class RoomService extends BaseService<Room, RoomDAO> implements IRoomServ
         return true;
     }
 
+    @Override
+    public RoomOnline getRoomById(String roomId) {
+        RoomOnline roomOnline = redisUtils.getKeyValue(DEFAULT_ROOM_KEY,roomId,RoomOnline.class);
+        return roomOnline;
+    }
+
     private RoomOnline checkRoomValidate(String roomId) {
         if (StringUtils.isEmpty(roomId)) {
             throw  new ServiceException("房间ID不能为空");

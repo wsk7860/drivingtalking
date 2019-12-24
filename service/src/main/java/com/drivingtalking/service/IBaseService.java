@@ -12,5 +12,7 @@ public interface IBaseService<T> {
 
      List<T> findAll(Class<T> t);
 
+     List<T> findByIds(Class<T> t,List<String> ids);
+
 
 }

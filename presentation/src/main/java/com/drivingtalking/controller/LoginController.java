@@ -49,7 +49,6 @@ public class LoginController extends BaseController {
           memberService.save(member);
         }
         ContextManager.setSessionMember(member);
-        ContextManager.getSession().setMaxInactiveInterval(8);
          return  new ResponseModel<>(map(member,MemberVO.class));
     }
 

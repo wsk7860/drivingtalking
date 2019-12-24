@@ -2,6 +2,7 @@ package com.drivingtalking.vo.room;
 
 
 import com.drivingtalking.vo.base.BaseVO;
+import com.drivingtalking.vo.member.MemberPicVO;
 import lombok.Data;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class RoomVO extends BaseVO {
     /**
      * 参与人员
      */
-    private List<String> memberIds;
+    private List<MemberPicVO> members;
 
     private int isFull;
 

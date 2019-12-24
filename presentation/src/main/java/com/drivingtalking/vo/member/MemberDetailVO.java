@@ -15,7 +15,7 @@ public class MemberDetailVO extends BaseVO implements Serializable {
     @ApiModelProperty(value = "车牌号码")
     private String carNumber;
     @ApiModelProperty(value = "会员标签")
-    private List<String> labelNames;
+    private List<String> labelIds;
     @ApiModelProperty(value = "车信息")
     private String carInfo;
 }

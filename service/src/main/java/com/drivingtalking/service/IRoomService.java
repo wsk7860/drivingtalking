@@ -1,5 +1,6 @@
 package com.drivingtalking.service;
 
+import com.drivingtalking.model.cache.RoomOnline;
 import com.drivingtalking.model.room.Room;
 
 public interface IRoomService extends IBaseService<Room> {
@@ -11,4 +12,6 @@ public interface IRoomService extends IBaseService<Room> {
     Boolean leaveRoom(String roomId);
 
     Boolean handleRoomMember(String roomId,String memberId);
+
+    RoomOnline getRoomById(String roomId);
 }
