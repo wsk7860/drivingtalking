@@ -28,6 +28,6 @@ spring:
     password: admin
 server:
   port: 8081
-
-
-
+logging:
+  config: classpath:logback-spring.xml
+  rolling-logs-directory: "e:/log"

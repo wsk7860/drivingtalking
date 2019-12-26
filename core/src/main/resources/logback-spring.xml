@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2000-2018. YGSoft.Inc All Rights Reserved.
+  -->
+
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <!--application.yml 传递参数，不能使用logback 自带的<property>标签 -->
+    <springProperty scope="context" name="logback.app.name" source="eparty.application.name"
+                    defaultValue="eparty.system"/>
+    <springProperty scope="context" name="logback.directory" source="logging.rolling-logs-directory"
+                    defaultValue="/log"/>
+
+    <contextName>${logback.app.name}</contextName>
+
+    <!--输出到控制台 ConsoleAppender-->
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <!--展示格式 layout-->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{mm:ss.SSS} %5p [%X{user}%t] %-40.40logger{39} : %m%n</pattern>
+        </layout>
+    </appender>
+
+    <!--输出到文件 RollingFileAppender-->
+    <appender name="fileLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志名称，如果没有File属性，那么只会使用FileNamePattern的文件路径规则
+            如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天
+            的日志改名为今天的日期。即，<File> 的日志都是当天的。
+        -->
+        <File>${logback.directory}/${logback.app.name}.log</File>
+        <!--滚动策略，按照时间滚动 TimeBasedRollingPolicy-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间-->
+            <FileNamePattern>${logback.directory}/${logback.app.name}.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!--只保留最近90天的日志-->
+            <maxHistory>90</maxHistory>
+            <!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
+            <!--<totalSizeCap>1GB</totalSizeCap>-->
+        </rollingPolicy>
+        <!--日志输出编码格式化-->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [X{user}%t] %-40.40logger{39} : %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--专门针对ERROR以上级别的分离日志-->
+    <appender name="fileLog-Error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--只是想要 Error 级别的日志，过滤一下-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>Error</level>
+        </filter>
+        <File>${logback.directory}/${logback.app.name}.error.log</File>
+        <!--滚动策略，按照时间滚动 TimeBasedRollingPolicy-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间-->
+            <FileNamePattern>${logback.directory}/${logback.app.name}.error.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!--只保留最近90天的日志-->
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <!--日志输出编码格式化-->
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [X{user}%t] %-40.40logger{39} : %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 测试环境+开发环境-->
+    <springProfile name="default,test,dev">
+        <root level="INFO">
+            <appender-ref ref="consoleLog"/>
+        </root>
+        <logger name="com.ygsoft.eparty" level="DEBUG" additivity="false">
+            <appender-ref ref="consoleLog"/>
+        </logger>
+        <!--为了观察连接池状况和事务创建、提交的状况-->
+        <logger name="org.springframework.jdbc.datasource" level="DEBUG" additivity="false">
+            <appender-ref ref="consoleLog"/>
+        </logger>
+    </springProfile>
+
+    <!-- 生产环境-->
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="fileLog"/>
+            <appender-ref ref="fileLog-Error"/>
+        </root>
+        <logger name="com.ygsoft.eparty" level="INFO" additivity="false">
+            <appender-ref ref="fileLog"/>
+            <appender-ref ref="fileLog-Error"/>
+        </logger>
+
+    </springProfile>
+
+</configuration>
