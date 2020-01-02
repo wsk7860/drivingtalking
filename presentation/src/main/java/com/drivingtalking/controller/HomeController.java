@@ -38,20 +38,8 @@ public class HomeController extends BaseController{
 
     @ApiOperation(value = "获取AgoraToken",httpMethod = "GET")
    @GetMapping(value = "/getAgoraToken")
-   public ResponseModel<String> getAgoraToken(String userId) throws NoSuchAlgorithmException {
-       AgoraToken agoraToken = agoraTokenService.getBeforeEffectDate(new Date());
-       String tokenString;
-       if (agoraToken == null) {
-           tokenString  = SignalingToken.getToken(config.getAgora().getAppId(),config.getAgora().getCertificate(),userId,3600);
-           agoraToken = new AgoraToken();
-           agoraToken.setCreateDate(new Date());
-           agoraToken.setEffectDate(DateUtils.addSeconds(agoraToken.getCreateDate(),3600));
-           agoraToken.setCreateMemberId(ContextManager.getSessionMember().getId());
-           agoraToken.setValue(tokenString);
-           agoraTokenService.save(agoraToken);
-       } else {
-           tokenString = agoraToken.getValue();
-       }
+   public ResponseModel<String> getAgoraToken(String  channelId) {
+       String  tokenString  = SignalingToken.getToken(config.getAgora().getAppId(),config.getAgora().getCertificate(),ContextManager.getSessionMember().getId(),channelId,3600);
        return new ResponseModel<>(tokenString);
    }
 }
