@@ -1,6 +1,5 @@
 package com.drivingtalking.controller;
 
-import com.drivingtalking.model.token.AgoraToken;
 import com.drivingtalking.service.IAgoraTokenService;
 import com.drivingtalking.util.Config;
 import com.drivingtalking.util.ContextManager;
@@ -8,12 +7,10 @@ import com.drivingtalking.util.ResponseModel;
 import com.drivingtalking.util.SignalingToken;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.time.DateUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 
 @RestController
 @RequestMapping("/home")
