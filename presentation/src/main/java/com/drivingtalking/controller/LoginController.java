@@ -46,6 +46,8 @@ public class LoginController extends BaseController {
         Member member =memberService.getByLoginName(loginName);
         if (member == null) {
           member = Member.buildForLoginName(loginName);
+          int rowCount = memberService.count(Member.class);
+          member.setId(String.valueOf(++rowCount));
           memberService.save(member);
         }
         ContextManager.setSessionMember(member);

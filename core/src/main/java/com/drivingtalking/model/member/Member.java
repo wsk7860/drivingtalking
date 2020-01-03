@@ -1,6 +1,7 @@
 package com.drivingtalking.model.member;
 
 import com.drivingtalking.model.base.BaseModel;
+import com.drivingtalking.model.base.UUIDGenerator;
 import lombok.Data;
 
 import java.io.Serializable;

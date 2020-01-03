@@ -71,4 +71,8 @@ public class RedisUtils {
         }
         return results;
     }
+
+    public void  cleanKeyValue(String redisKey){
+        redisTemplate.delete(redisKey);
+    }
 }

@@ -49,6 +49,10 @@ public class MongoTemplateProxy<T> {
         return  mongoTemplate.find(query,t);
     }
 
+    public int count(Class<T> t) {
+        return  (int) mongoTemplate.count(new Query(),t);
+    }
+
     public void save(T  t){
         mongoTemplate.save(t);
     }

@@ -1,6 +1,7 @@
 package com.drivingtalking.controller;
 
 import com.drivingtalking.configure.MessageProducer;
+import com.drivingtalking.service.impl.RoomService;
 import com.drivingtalking.test.BaseControllerTest;
 import com.drivingtalking.util.RedisUtils;
 import com.drivingtalking.util.ResponseModel;
@@ -35,9 +36,9 @@ public class LoginControllerTest extends BaseControllerTest {
 
     @Test
     public void test2(){
-        redisUtils.set("1","1");
-        System.out.println(redisUtils.get("1"));
-        messageProducer.send("this is message");
+        redisUtils.cleanKeyValue(RoomService.DEFAULT_ROOM_KEY);
     }
+
+
 
 }

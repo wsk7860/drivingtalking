@@ -14,6 +14,10 @@ public class UUIDGenerator {
             "1","2","3","4","5","6","7","8","9"
     };
 
+    public static final String[] NUMBER_CHARS =  new String[]{
+            "1","2","3","4","5","6","7","8","9"
+    };
+
     public static String generateShortUUID(){
         StringBuilder builder = new StringBuilder();
         String uuid = UUID.randomUUID().toString().replace("-","");
@@ -24,7 +28,20 @@ public class UUIDGenerator {
         return  builder.toString();
     }
 
+    public static String generateNumberShortUUID() {
+        StringBuilder builder = new StringBuilder();
+        for(int i=0;i<16;i++){
+            int randomIndex = new Random().nextInt(NUMBER_CHARS.length-1);
+            builder.append(NUMBER_CHARS[randomIndex]);
+        }
+        return  builder.toString();
+    }
+
     public static  String generateUUID(){
-        return PREFIX + System.currentTimeMillis() + generateShortUUID();
+        return  System.currentTimeMillis() + generateShortUUID();
+    }
+
+    public static String generateNumberUUID(){
+        return  System.currentTimeMillis() + generateNumberShortUUID();
     }
 }

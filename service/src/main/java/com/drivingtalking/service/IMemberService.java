@@ -11,4 +11,6 @@ public interface IMemberService extends IBaseService<Member> {
     void saveMember(Member member);
 
 
+
+
 }

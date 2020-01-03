@@ -14,5 +14,7 @@ public interface IBaseService<T> {
 
      List<T> findByIds(Class<T> t,List<String> ids);
 
+     int count(Class<T> t);
+
 
 }

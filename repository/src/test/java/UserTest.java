@@ -41,4 +41,9 @@ public class UserTest {
         System.out.println(PagerManager.getPagerSupport().getTotal());;
     }
 
+    @Test
+    public void count() {
+        System.out.println(userDAO.count(Member.class));
+    }
+
 }

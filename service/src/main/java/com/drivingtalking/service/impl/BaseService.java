@@ -39,5 +39,10 @@ public class BaseService<T extends BaseModel,D extends BaseDAO<T>> implements IB
         return dao.findByIds(t,ids);
     }
 
+    @Override
+    public int count(Class<T> t) {
+        return dao.count(t);
+    }
+
 
 }
