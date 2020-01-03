@@ -1,0 +1,14 @@
+{
+  "name": "cordova-plugin-agora-audio",
+  "version": "1.0.0",
+  "description": "a cordova plugin, a JS version of agora SDK",
+  "cordova": {
+    "id": "cordova-plugin-agora-audio",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "author": "basaka.c",
+  "license": "ISC"
+}
