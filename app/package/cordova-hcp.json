@@ -1,0 +1,8 @@
+{
+  "name": "silentUpdate",
+  "ios_identifier": "",
+  "android_identifier": "",
+  "update": "now",
+  "min_native_interface":1,
+  "content_url": "http://www.drivingtalking.com/app/www"
+}
