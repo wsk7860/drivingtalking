@@ -10,7 +10,11 @@ export const STATUS = {
   /**
    * 警告，进行内容提示
    */
-  WARN: 2
+  WARN: 2,
+  /**
+   * 提示内容
+   */
+  INFO: 3
 }
 
 export const OPERATE = {
@@ -33,5 +37,9 @@ export const OPERATE = {
   /**
    * 用户离线
    */
-  USER_OFFLINE: 4
+  USER_OFFLINE: 4,
+  /**
+   * token已过期
+   */
+  REQUEST_TOKEN: 5
 }

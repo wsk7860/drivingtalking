@@ -5,8 +5,8 @@ import { text, warn } from './ToastUtil'
 
 axios.defaults.timeout = 30000
 
-const SERVICE_URL = 'http://47.107.98.186:8081/'
-// const SERVICE_URL = 'http://10.0.2.4:8095/'
+const SERVICE_URL = 'http://47.107.98.186:8081'
+// const SERVICE_URL = 'http://10.0.2.4:8095'
 
 let toUtf8 = (input) => {
   if (typeof input !== 'string') {
