@@ -48,7 +48,15 @@ public class RtcEngineEventHandler extends IRtcEngineEventHandler {
         /**
          * 加入成功
          */
-        JOIN_SUCCESS
+        JOIN_SUCCESS,
+        /**
+         * 用户加入
+         */
+        USER_JOINED,
+        /**
+         * 用户离线
+         */
+        USER_OFFLINE
     }
 
     /**
@@ -155,7 +163,7 @@ public class RtcEngineEventHandler extends IRtcEngineEventHandler {
     @Override
     public void onUserJoined(int uid, int elapsed) {
         // 远端用户/主播加入当前频道回调。
-        this.sendResult(Status.OK, uid, Operate.NOTHING, "新用户加入频道");
+        this.sendResult(Status.OK, uid, Operate.USER_JOINED, "新用户加入频道");
     }
 
     @Override
@@ -165,7 +173,7 @@ public class RtcEngineEventHandler extends IRtcEngineEventHandler {
         // public void run() {
         // Log.i("agora", "User offline, uid: " + (uid & 0xFFFFFFFFL));
         // 远端用户（通信模式）/主播（直播模式）离开当前频道回调。
-        this.sendResult(Status.OK, uid, Operate.NOTHING, "用户离线");
+        this.sendResult(Status.OK, uid, Operate.USER_OFFLINE, "用户离线");
         // }
         // });
 
