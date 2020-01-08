@@ -18,14 +18,14 @@
 </template>
 
 <script>
-import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN'
+import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
 import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
-  data() {
+  data () {
     return {
-      zh_CN,
+      zhCN
     }
   },
   components: {
