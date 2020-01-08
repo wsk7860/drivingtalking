@@ -8,12 +8,7 @@
       <div class="right"><i class="iconfont icon-message"></i></div>
     </header>
     <div class="member-list">
-      <img src="@/assets/images/icon.png" />
-      <img src="@/assets/images/icon.png" />
-      <img src="@/assets/images/icon.png" />
-      <img src="@/assets/images/icon.png" />
-      <img src="@/assets/images/icon.png" />
-      <img src="@/assets/images/icon.png" />
+      <img v-for="member in members" :key="member.id" src="@/assets/images/icon.png" :title="member.picId" />
     </div>
     <div class="audio-beat">
       <span></span>
@@ -39,34 +34,128 @@
       <span></span>
     </div>
     <div class="right-toolbar">
-      <div><i class="iconfont icon-mute"></i></div>
-      <div><i class="iconfont icon-switch"></i></div>
-      <div><i class="iconfont icon-signout"></i></div>
+      <div><i class="iconfont icon-mute" :class="{'muted':muted}" @click="mute"></i></div>
+      <div><i class="iconfont icon-switch" @click="switchRoom"></i></div>
+      <div><i class="iconfont icon-signout" @click="signout"></i></div>
     </div>
-    <div class="bottom-toolbar">
-      <div><i class="iconfont icon-connect"></i></div>
-      <div><i class="iconfont icon-voice"></i></div>
-      <div><i class="iconfont icon-call"></i></div>
-    </div>
+    <!-- <div class="bottom-toolbar"> -->
+      <!-- <div><i class="iconfont icon-connect"></i></div> -->
+      <!-- <div><i class="iconfont icon-voice"></i></div> -->
+      <!-- <div><i class="iconfont icon-call"></i></div> -->
+    <!-- </div> -->
   </div>
 </template>
 
 <script>
-import { deviceready } from '@/utils/CordovaEventUtil'
+import { deviceready, exitapp } from '@/utils/CordovaEventUtil'
 import { eventBus } from '@/utils/EventBusUtil'
-import { agoraCreate, agoraJoinChannel } from '@/utils/AgoraUtil'
-import { getRandomRoom } from '@/apis/RoomApi'
+import { agoraCreate, agoraJoinChannel, agoraMuteLocalAudioStream, agoraRenewToken } from '@/utils/AgoraUtil'
+import { warn } from '@/utils/ToastUtil'
+import { getRandomRoom, getRoom, joinRoom, leaveRoom } from '@/apis/RoomApi'
 import { getAgoraToken } from '@/apis/HomeApi'
+import { STATUS, OPERATE } from '@/constants/AgoraConstant'
 export default {
   data () {
-    return {}
+    return {
+      muted: false,
+      members: []
+    }
   },
   methods: {
-    showMine () {}
+    showMine () {},
+    async getRoom  () {
+      // 获取房间号
+      let roomId = await getRandomRoom()
+      this.$store.commit('setRoom', roomId)
+    },
+    async joinRoom () {
+      // 加入房间
+      // 获取token
+      let token = await getAgoraToken(this.$store.getters['room/id'])
+      if (this.$store.getters['cordova/enabled']) {
+        agoraJoinChannel(
+          token,
+          this.$store.getters['room/id'],
+          this.$store.getters['user/id']
+        )
+      }
+    },
+    async leaveRoom () {
+      // 退出房间，仅通知服务
+      await leaveRoom(this.$store.getters['room/id'])
+    },
+    mute () {
+      // 禁用本地麦克风
+      this.muted = !this.muted
+      if (this.muted && this.$store.getters['cordova/enabled']) {
+        agoraMuteLocalAudioStream(this.muted)
+      }
+    },
+    switchRoom () {
+      // 切换房间
+      this.leaveRoom()
+
+      this.getRoom()
+      this.joinRoom()
+    },
+    signout () {
+      console.log('cordova下退出app')
+      this.$createDialog({
+        type: 'confirm',
+        icon: 'cubeic-danger',
+        title: '退出应用',
+        confirmBtn: {
+          text: '退出',
+          active: true,
+          disabled: false,
+          href: 'javascript:;'
+        },
+        onConfirm: () => {
+          if (this.$store.getters['cordova/enabled']) {
+            exitapp()
+          }
+        }
+      }).show()
+    }
   },
   async created () {
-    eventBus.$on('agoraEvent', function (result) {
+    let that = this
+    eventBus.$on('agoraEvent', async function (result) {
       console.log(result)
+      if (result.status === STATUS.OK) {
+        switch (result.operate) {
+          case OPERATE.JOIN_SUCCESS:
+            // 加入房间成功，回调服务
+            await joinRoom(that.$store.getters['room/id'])
+            // 获取房间成员
+            that.$nextTick(async () => {
+              let roomMember = await getRoom(that.$store.getters['room/id'])
+              that.members = roomMember.members
+            })
+            break
+          case OPERATE.USER_JOINED:
+          case OPERATE.USER_OFFLINE:
+            // 其他人加入房间，重新获取房间信息
+            that.$nextTick(async () => {
+              let roomMember = await getRoom(that.$store.getters['room/id'])
+              that.members = roomMember.members
+            })
+            break
+          case OPERATE.RENEW_TOKEN:
+            // 重新获取token
+            // 获取token
+            let token = await getAgoraToken(that.$store.getters['room/id'])
+            agoraRenewToken(token)
+            break
+          case OPERATE.REQUEST_TOKEN:
+            // token已过期
+            that.joinRoom()
+            break
+        }
+      } else if (result.status === STATUS.WARN && !!result.message) {
+        // 警告信息
+        warn(result.message)
+      }
     })
 
     // 创建agora实例
@@ -80,21 +169,10 @@ export default {
     }
 
     // 获取房间号
-    let roomId = await getRandomRoom()
-    this.$store.commit('setRoom', roomId)
+    this.getRoom()
 
     // 加入房间
-    if (this.$store.getters['cordova/enabled']) {
-      deviceready(async () => {
-        // 获取token
-        let token = await getAgoraToken(roomId)
-        agoraJoinChannel(
-          token,
-          this.$store.getters['room/id'],
-          this.$store.getters['user/id']
-        )
-      })
-    }
+    this.joinRoom()
   }
 }
 </script>
@@ -269,4 +347,6 @@ export default {
 
     & i
       font-size: 30px
+.muted
+  color $color-item-primary
 </style>

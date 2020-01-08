@@ -1,0 +1,16 @@
+{
+    "android": {
+        "debug": {
+            "keystore": "./sign_tools/drivingtalking.keystore",
+            "alias": "drivingtalking.keystore",
+            "storePassword": "123456",
+            "password": "123456"
+        },
+        "release": {
+            "keystore": "./sign_tools/drivingtalking.keystore",
+            "alias": "drivingtalking.keystore",
+            "storePassword": "123456",
+            "password": "123456"
+        }
+    }
+}

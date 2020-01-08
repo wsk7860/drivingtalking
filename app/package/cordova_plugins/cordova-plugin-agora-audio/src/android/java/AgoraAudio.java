@@ -21,18 +21,6 @@ import io.agora.rtc.IRtcEngineEventHandler;
  */
 public class AgoraAudio extends CordovaPlugin {
 
-    private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
-        @Override
-        public void onJoinChannelSuccess(String channel, final int uid, int elapsed) {
-            cordova.getThreadPool().execute(new Runnable() {
-                @Override
-                public void run() {
-                    LOG.i("Join channel success, uid: " + (uid & 0xFFFFFFFFL),"Join channel success");
-                }
-            });
-        }
-    };
-
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("create")) {
@@ -42,7 +30,7 @@ public class AgoraAudio extends CordovaPlugin {
 
                 RtcEngineCreator.getInstance().setAppId(activity.getString(activity.getApplication().getResources()
                         .getIdentifier("agora_app_id", "string", activity.getApplication().getPackageName())));
-                RtcEngineCreator.getInstance().setRtcEngineEventHandler(mRtcEventHandler);
+                RtcEngineCreator.getInstance().setRtcEngineEventHandler(new RtcEngineEventHandler());
                 RtcEngineCreator.getInstance().setContext(activity.getBaseContext());
                 RtcEngineCreator.getInstance().setCallbackContext(callbackContext);
                 RtcEngineCreator.getInstance().setRtcEngine();

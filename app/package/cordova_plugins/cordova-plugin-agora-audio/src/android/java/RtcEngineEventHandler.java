@@ -30,7 +30,11 @@ public class RtcEngineEventHandler extends IRtcEngineEventHandler {
         /**
          * 警告，进行内容提示
          */
-        WARN
+        WARN,
+        /**
+         * 提示内容
+         */
+        INFO
     }
 
     /**
@@ -48,7 +52,19 @@ public class RtcEngineEventHandler extends IRtcEngineEventHandler {
         /**
          * 加入成功
          */
-        JOIN_SUCCESS
+        JOIN_SUCCESS,
+        /**
+         * 用户加入
+         */
+        USER_JOINED,
+        /**
+         * 用户离线
+         */
+        USER_OFFLINE,
+        /**
+         * token已过期
+         */
+        REQUEST_TOKEN
     }
 
     /**
@@ -129,15 +145,8 @@ public class RtcEngineEventHandler extends IRtcEngineEventHandler {
 
     @Override
     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
-        // runOnUiThread(new Runnable() {
-        // @Override
-        // public void run() {
-        // Log.i("agora", "Join channel success, uid: " + (uid & 0xFFFFFFFFL));
-
         // 加入频道回调
         this.sendResult(Status.OK, uid, Operate.JOIN_SUCCESS, "加入频道成功");
-        // }
-        // });
     }
 
     @Override
@@ -155,20 +164,13 @@ public class RtcEngineEventHandler extends IRtcEngineEventHandler {
     @Override
     public void onUserJoined(int uid, int elapsed) {
         // 远端用户/主播加入当前频道回调。
-        this.sendResult(Status.OK, uid, Operate.NOTHING, "新用户加入频道");
+        this.sendResult(Status.OK, uid, Operate.USER_JOINED, "新用户加入频道");
     }
 
     @Override
     public void onUserOffline(int uid, int reason) {
-        // runOnUiThread(new Runnable() {
-        // @Override
-        // public void run() {
-        // Log.i("agora", "User offline, uid: " + (uid & 0xFFFFFFFFL));
         // 远端用户（通信模式）/主播（直播模式）离开当前频道回调。
-        this.sendResult(Status.OK, uid, Operate.NOTHING, "用户离线");
-        // }
-        // });
-
+        this.sendResult(Status.OK, uid, Operate.USER_OFFLINE, "用户离线");
     }
 
     public void onConnectionStateChanged(int state, int reason) {
@@ -233,7 +235,7 @@ public class RtcEngineEventHandler extends IRtcEngineEventHandler {
 
     public void onRequestToken() {
         // Token 过期回调。
-        this.sendResult(Status.OK, 0, Operate.RENEW_TOKEN, "Token已过期");
+        this.sendResult(Status.OK, 0, Operate.REQUEST_TOKEN, "Token已过期");
     }
 
     public void onMicrophoneEnabled(boolean enabled) {
