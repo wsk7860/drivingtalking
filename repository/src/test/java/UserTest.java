@@ -21,7 +21,7 @@ public class UserTest {
     @Autowired
     private MemberDAO userDAO;
 
-    @Test
+   // @Test
     public void save(){
         Member member  = new Member();
         member.setId("1");
@@ -31,7 +31,7 @@ public class UserTest {
         userDAO.save(member);
     }
 
-    @Test
+    //@Test
     public void findById(){
         Map<String,Object> params = new HashMap<>();
         params.put("id","1");
@@ -41,7 +41,7 @@ public class UserTest {
         System.out.println(PagerManager.getPagerSupport().getTotal());;
     }
 
-    @Test
+    //@Test
     public void count() {
         System.out.println(userDAO.count(Member.class));
     }

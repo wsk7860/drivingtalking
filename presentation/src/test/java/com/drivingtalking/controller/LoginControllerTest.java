@@ -20,7 +20,7 @@ public class LoginControllerTest extends BaseControllerTest {
     @Autowired
     private MessageProducer messageProducer;
 
-    @Test
+    //@Test
     public void test() {
         Map<String,Object> params = new HashMap<>();
         params.put("userId","123");
@@ -34,7 +34,7 @@ public class LoginControllerTest extends BaseControllerTest {
         System.out.println(responseModel1.getErrorMessage());
     }
 
-    @Test
+    // @Test
     public void test2(){
         redisUtils.cleanKeyValue(RoomService.DEFAULT_ROOM_KEY);
     }

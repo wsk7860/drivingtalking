@@ -37,11 +37,11 @@ public class LoginController extends BaseController {
     public ResponseModel<MemberVO> login(String loginName){
 
         if (StringUtils.isEmpty(loginName)) {
-            throw new ControllerException("手机号码不能为空");
+            throw new ControllerException("车牌号码不能为空");
         }
-        String regex = "1[3|4|5|7|8][0-9]\\d{4,8}$";
+        String regex = "([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1})";
         if (!Pattern.matches(regex,loginName)) {
-            throw  new ControllerException("手机号码格式不对");
+            throw  new ControllerException("车牌号码格式不对");
         }
         Member member =memberService.getByLoginName(loginName);
         if (member == null) {
