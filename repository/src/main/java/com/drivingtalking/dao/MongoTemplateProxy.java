@@ -56,4 +56,8 @@ public class MongoTemplateProxy<T> {
     public void save(T  t){
         mongoTemplate.save(t);
     }
+
+    public int count(Class<T> t,Query query) {
+        return (int) mongoTemplate.count(query,t);
+    }
 }

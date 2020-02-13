@@ -65,6 +65,10 @@ public class BaseDAO<T extends BaseModel> {
       return proxy.count(t);
     }
 
+    public int count(Class<T> t,Map<String,Object> params) {
+        return proxy.count(t,getQuery(params));
+    }
+
 
     public Criteria le(String propertyName, Object value) {
         return Criteria.where(propertyName).lte(value);

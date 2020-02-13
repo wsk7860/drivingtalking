@@ -1,9 +1,11 @@
 package com.drivingtalking.model.common;
 
 import com.drivingtalking.model.base.BaseModel;
+import lombok.Data;
 
 import java.util.Date;
 
+@Data
 public class Notice extends BaseModel {
 
     public enum  Type {
@@ -81,6 +83,8 @@ public class Notice extends BaseModel {
     private Date  pushDate;
 
     private Integer status;
+
+    private String createMemberId;
 
 
 }
