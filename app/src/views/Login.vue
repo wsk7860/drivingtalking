@@ -67,7 +67,9 @@ export default {
     if (this.$store.getters['cordova/enabled']) {
       deviceready(() => {
         // 隐藏启动页，启动页默认15秒
-        hideSplash()
+        setTimeout(() => {
+          hideSplash()
+        }, 3000)
       })
     }
   }
